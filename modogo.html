@@ -778,13 +778,37 @@ document.getElementById('storyStartBtn').addEventListener('click', async () => {
   readBtn.style.display = 'none';
   box.innerHTML = '<div class="loading">Super Modogo invente une histoire <span class="dot-flash"><span></span><span></span><span></span></span></div>';
   try{
-    currentStory = await askModogo(
-      buildBrain() + "\nRaconte une courte histoire douce pour endormir un enfant, inspirée de la nature ou des légendes de la RDC (forêt équatoriale, fleuve Congo, animaux). Maximum 10 phrases, fin apaisante.",
-      "Raconte-moi une histoire du soir."
-    );
-  }catch(e){
-    currentStory = FALLBACK_STORIES[Math.floor(Math.random()*FALLBACK_STORIES.length)];
+  currentStory = await askModogo(
+    buildBrain() + "\nRaconte une courte histoire du soir."
+  );
+}catch(e){
+  currentStory = FALLBACK_STORIES[Math.floor(Math.random()*FALLBACK_STORIES.length)];
+}
+box.textContent = currentStory;
+readBtn.style.display = 'block';
+
+// --- CHANSONS & BERCEUSES ---
+const songs = [
+  {
+    title: "Douce berceuse",
+    lyrics: "Fais dodo, Colas mon p'tit frère... Fais dodo, tu auras du lolo. Maman est en haut qui fait du chocolat, Papa est en bas qui fait du chocolat..."
+  },
+  {
+    title: "Au clair de la lune",
+    lyrics: "Au clair de la lune, mon ami Pierrot, prête-moi ta plume pour écrire un mot. Ma chandelle est morte, je n'ai plus de feu, ouvre-moi ta porte pour l'amour de Dieu..."
+  },
+  {
+    title: "Le chant du singe apaisant",
+    lyrics: "Dors mon petit trésor, la nuit est douce et calme. Les étoiles brillent dans le ciel... Fais de beaux rêves..."
   }
+];
+function singLullaby() {
+  const randomSong = songs[Math.floor(Math.random() * songs.length)];
+  pushMsg(`🎵 *Chanson : ${randomSong.title}*\n\n${randomSong.lyrics}`, 'bot');
+  speak(randomSong.lyrics);
+}
+
+
   box.textContent = currentStory;
   readBtn.style.display = 'block';
 });
